@@ -1,0 +1,1 @@
+# 基于 wsl2 Ubuntu-24.04 的 STELLOPT、SIMSOPT 环境配置
