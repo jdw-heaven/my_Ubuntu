@@ -130,3 +130,11 @@ fi
 ```bash
 cat /etc/os-release
 ```
+
+## git push 操作
+
+```bash
+git add .
+git commit -m "update"
+git push
+```
