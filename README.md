@@ -80,3 +80,9 @@ exit    # 结束时输入会生成 log.txt
 ```bash
 history > history.txt
 ```
+
+## 查看 Linux 发行版本信息
+
+```bash
+cat /etc/os-release
+```
