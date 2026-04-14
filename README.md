@@ -67,19 +67,63 @@ git clone https://github.com/jdw-heaven/my_Ubuntu.git
 
 
 
-## 记录整个终端会话（最常用）
+## 记录终端会话
+
+在 `.bashrc` 中添加：
 
 ```bash
-script log.txt
+# ---------- history 基本设置 ----------
+HISTSIZE=50000
+HISTFILESIZE=100000
+# 减少重复
+# HISTCONTROL=ignoredups:erasedups
+# 忽略没必要的命令
+# HISTIGNORE="ls:bg:fg:history:clear:exit"
 
-exit    # 结束时输入会生成 log.txt
+shopt -s histappend
+shopt -s cmdhist
+
+HISTTIMEFORMAT="%F %T "
+
+# 历史文件位置
+HISTFILE="$HOME/.bash_history"
+
+# 每次显示提示符前：
+# 1. 先把当前 session 新命令写入 HISTFILE
+# 2. 再把其他终端刚写入的命令读进来
+PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
+
+# ---------- 退出时按天归档 ----------
+__save_daily_history() {
+    local dayfile="$HOME/my_Ubuntu/my_logs/$(date +%Y%m%d)_bash.txt"
+
+    # 先确保当前会话 history 已写入主历史文件
+    history -a
+    history -n
+
+    # 导出当前 shell 可见的 history
+    history | sed 's/^[ ]*[0-9]\+[ ]*//' > "$dayfile"
+}
+
+trap '__save_daily_history' EXIT
+
+# ---------- script ----------
+if [ -t 1 ] && [ -z "$SCRIPT_LOGGING" ]; then
+    export SCRIPT_LOGGING=1
+
+    logdir="$HOME/my_Ubuntu/my_logs/full"
+    mkdir -p "$logdir"
+
+    ts="$(date +%Y%m%d_%H%M%S)"
+    base="${ts}_$(hostname)_$$"
+
+    logfile="$logdir/${base}.typescript"
+    timingfile="$logdir/${base}.timing"
+
+    exec script -q -f --timing="$timingfile" "$logfile"
+fi
 ```
 
-## 导出历史命令（不是输出）
-
-```bash
-history > history.txt
-```
 
 ## 查看 Linux 发行版本信息
 
