@@ -54,6 +54,19 @@ export https_proxy="http://$host_ip"
 export all_proxy="socks5://$host_ip"
 ```
 
+## 克隆 my_Ubuntu repo
+
+```bash
+# 设置默认 id
+
+git config --global user.email "jdw.heaven@gmail.com"
+git config --global user.name "jdw-heaven"
+
+git clone https://github.com/jdw-heaven/my_Ubuntu.git
+```
+
+
+
 ## 记录整个终端会话（最常用）
 
 ```bash
